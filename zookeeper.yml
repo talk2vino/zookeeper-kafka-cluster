@@ -1,0 +1,119 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: zookeeper-1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+        server-id: "1"
+    spec:
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: wal
+          emptyDir:
+            medium: Memory
+      containers:
+        - name: server
+          image: gcr.io/talk2vinocloud/zookeeper:v1
+          env:
+            - name: ZOOKEEPER_ID
+              value: "1"
+            - name: ZOOKEEPER_SERVER_1
+              value: zookeeper-1
+            - name: ZOOKEEPER_SERVER_2
+              value: zookeeper-2
+            - name: ZOOKEEPER_SERVER_3
+              value: zookeeper-3
+          ports:
+            - containerPort: 2181
+            - containerPort: 2888
+            - containerPort: 3888
+          volumeMounts:
+            - mountPath: /zookeeper/data
+              name: data
+            - mountPath: /zookeeper/wal
+              name: wal
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: zookeeper-2
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+        server-id: "2"
+    spec:
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: wal
+          emptyDir:
+            medium: Memory
+      containers:
+        - name: server
+          image: gcr.io/talk2vinocloud/zookeeper:v1
+          env:
+            - name: ZOOKEEPER_ID
+              value: "2"
+            - name: ZOOKEEPER_SERVER_1
+              value: zookeeper-1
+            - name: ZOOKEEPER_SERVER_2
+              value: zookeeper-2
+            - name: ZOOKEEPER_SERVER_3
+              value: zookeeper-3
+          ports:
+            - containerPort: 2181
+            - containerPort: 2888
+            - containerPort: 3888
+          volumeMounts:
+            - mountPath: /zookeeper/data
+              name: data
+            - mountPath: /zookeeper/wal
+              name: wal
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: zookeeper-3
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+        server-id: "3"
+    spec:
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: wal
+          emptyDir:
+            medium: Memory
+      containers:
+        - name: server
+          image: gcr.io/talk2vinocloud/zookeeper:v1
+          env:
+            - name: ZOOKEEPER_ID
+              value: "3"
+            - name: ZOOKEEPER_SERVER_1
+              value: zookeeper-1
+            - name: ZOOKEEPER_SERVER_2
+              value: zookeeper-2
+            - name: ZOOKEEPER_SERVER_3
+              value: zookeeper-3
+          ports:
+            - containerPort: 2181
+            - containerPort: 2888
+            - containerPort: 3888
+          volumeMounts:
+            - mountPath: /zookeeper/data
+              name: data
+            - mountPath: /zookeeper/wal
+              name: wal
